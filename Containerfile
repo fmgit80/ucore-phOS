@@ -6,8 +6,18 @@ COPY system_files /system_files
 # Base Image
 FROM ghcr.io/ublue-os/ucore:stable
 RUN dnf remove -y tailscale
-RUN dnf config-manager addrepo \
-    --from-repofile=https://pkgs.netbird.io/yum/netbird.repo 
+
+RUN tee /etc/yum.repos.d/netbird.repo <<EOF
+[netbird]
+name=netbird
+baseurl=https://pkgs.netbird.io/yum/
+enabled=1
+gpgcheck=1
+gpgkey=https://pkgs.netbird.io/yum/repodata/repomd.xml.key
+repo_gpgcheck=1
+EOF
+
+RUN dnf config-manager addrepo --from-repofile=/etc/yum.repos.d/netbird.repo
 RUN dnf install -y netbird
 RUN systemctl enable netbird.service
 RUN dnf clean all
