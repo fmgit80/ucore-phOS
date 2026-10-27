@@ -4,16 +4,13 @@ COPY build_files /
 COPY system_files /system_files
 
 # Base Image
-FROM ghcr.io/ublue-os/bazzite:stable
-## Other possible base images include:
-# FROM ghcr.io/ublue-os/bazzite:testing
-# FROM ghcr.io/ublue-os/aurora:stable
-# FROM ghcr.io/ublue-os/bluefin-nvidia-open:stable
-# 
-# ... and so on, here are more base images
-# Universal Blue Images: https://github.com/orgs/ublue-os/packages
-# Fedora base image: quay.io/fedora/fedora-bootc:44
-# CentOS base images: quay.io/centos-bootc/centos-bootc:stream10
+FROM ghcr.io/ublue-os/ucore:stable
+RUN dnf remove -y tailscale
+RUN dnf config-manager addrepo \
+    --from-repofile=https://pkgs.netbird.io/yum/netbird.repo 
+RUN dnf install -y netbird
+RUN systemctl enable netbird.service
+RUN dnf clean all
 
 ### [IM]MUTABLE /opt
 ## Some bootable images, like Fedora, have /opt symlinked to /var/opt, in order to
