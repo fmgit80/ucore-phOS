@@ -17,8 +17,9 @@ gpgkey=https://pkgs.netbird.io/yum/repodata/repomd.xml.key
 repo_gpgcheck=1
 EOF
 
-RUN dnf install -y netbird
-RUN systemctl enable netbird.service
+RUN dnf install -y --setopt=tsflags=noscripts netbird
+RUN netbird service install
+RUN netbird service start
 RUN dnf clean all
 
 ### [IM]MUTABLE /opt
