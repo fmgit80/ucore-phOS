@@ -5,23 +5,30 @@ set -ouex pipefail
 # Copy the contents of system_files/ of the git repo to /
 cp -avf "/ctx/system_files"/. /
 
-### Install packages
+# --- DNF SPEEDUP ---
+sed -i '/^\[main\]/a max_parallel_downloads=10' /etc/dnf/dnf.conf
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
+# --- TAILSCALE/NETBIRD ---
+dnf remove -y tailscale
+dnf install -y --setopt=tsflags=noscripts netbird
 
-# this installs a package from fedora repos
-dnf5 install -y tmux
+# --- SCRIPT DA INIZIALIZZARE IN RUNTIME ---
+# Imposta i permessi per gli script personalizzati in runtime
+for bash_file in /ctx/system_files/usr/bin/*; do
+    if [ -f "$bash_file" ]; then
+        bash_name=$(basename "$bash_file")
+        echo "Impostazione permessi di: $bash_name"
+        chmod +x /usr/bin/$bash_name
+    fi
+done
 
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
+# --- USER SERVICE ---
 
-#### Example for enabling a System Unit File
+# --- SYSTEM SERVICE ---
+ln -s /usr/lib/systemd/system/netbird-init.service /etc/systemd/system/multi-user.target.wants/netbird-init.service
 
-systemctl enable podman.socket
+# --- CLEANING IMAGE ---
+dnf clean all
+rm -rf /tmp/* /var/tmp/*
+rm -rf /run/dnf /run/selinux-policy
+rm -rf /var/lib/dnf

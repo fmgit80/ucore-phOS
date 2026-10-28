@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Controlla se il servizio systemd di NetBird è già presente
+if ! systemctl list-unit-files | grep -q "^netbird.service"; then
+    echo "NetBird service non trovato. Installazione in corso..."
+    # Esegue l'installazione nativa del servizio
+    /usr/bin/netbird service install
+else
+    echo "NetBird service già installato."
+fi
+
+# Assicura che il servizio sia avviato ed abilitato
+netbird service start

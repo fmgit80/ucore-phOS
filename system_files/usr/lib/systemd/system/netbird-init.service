@@ -1,0 +1,11 @@
+[Unit]
+Description=Inizializzazione e controllo NetBird
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/netbird-init
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
