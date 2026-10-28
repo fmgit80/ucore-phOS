@@ -12,27 +12,6 @@ sed -i '/^\[main\]/a max_parallel_downloads=10' /etc/dnf/dnf.conf
 dnf remove -y tailscale
 dnf install -y --setopt=tsflags=noscripts netbird
 
-# --- COCKPIT PLUGINS ---
-dnf install -y \
-    cockpit-bridge \
-    cockpit-doc \
-    cockpit-files \
-    cockpit-ha-cluster \
-    cockpit-image-builder \
-    cockpit-kdump \
-    cockpit-machines \
-    cockpit-networkmanager \
-    cockpit-ostree \
-    cockpit-packagekit \
-    cockpit-podman \
-    cockpit-selinux \
-    cockpit-sosreport \
-    cockpit-storaged \
-    cockpit-system \
-    cockpit-composer \
-    cockpit-session-recording \
-    dockermanager
-
 # --- DOCKER ---
 dnf config-manager addrepo --from-repofile https://download.docker.com/linux/fedora/docker-ce.repo
 dnf remove -y docker \

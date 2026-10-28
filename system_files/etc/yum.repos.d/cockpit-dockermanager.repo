@@ -1,6 +1,0 @@
-[cockpit-dockermanager]
-name=Cockpit Docker Manager
-baseurl=https://chrisjbawden.github.io/cockpit-dockermanager/yum/stable/
-enabled=1
-gpgcheck=0
-metadata_expire=0
