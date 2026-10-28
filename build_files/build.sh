@@ -13,6 +13,7 @@ dnf remove -y tailscale
 dnf install -y --setopt=tsflags=noscripts netbird
 
 # --- DOCKER ---
+dnf remove -y moby-engine docker-ce-cli
 dnf config-manager addrepo --from-repofile https://download.docker.com/linux/fedora/docker-ce.repo
 dnf remove -y docker \
     docker-client \
