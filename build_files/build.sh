@@ -12,6 +12,31 @@ sed -i '/^\[main\]/a max_parallel_downloads=10' /etc/dnf/dnf.conf
 dnf remove -y tailscale
 dnf install -y --setopt=tsflags=noscripts netbird
 
+# --- COCKPIT PLUGINS ---
+dnf install -y \
+    cockpit-389-ds \
+    cockpit-bridge \
+    cockpit-doc \
+    cockpit-files \
+    cockpit-ha-cluster \
+    cockpit-image-builder \
+    cockpit-kdump \
+    cockpit-machines \
+    cockpit-networkmanager \
+    cockpit-ostree \
+    cockpit-packagekit \
+    cockpit-podman \
+    cockpit-selinux \
+    cockpit-sosreport \
+    cockpit-storaged \
+    cockpit-system \
+    cockpit-ws \
+    cockpit-ws-selinux \
+    cockpit-composer \
+    cockpit-session-recording \
+    dockermanager
+
+
 # --- SCRIPT DA INIZIALIZZARE IN RUNTIME ---
 # Imposta i permessi per gli script personalizzati in runtime
 for bash_file in /ctx/system_files/usr/bin/*; do
@@ -26,6 +51,8 @@ done
 
 # --- SYSTEM SERVICE ---
 ln -s /usr/lib/systemd/system/netbird-init.service /etc/systemd/system/multi-user.target.wants/netbird-init.service
+ln -s /usr/lib/systemd/system/docker.service /etc/systemd/system/multi-user.target.wants/docker.service
+ln -s /usr/lib/systemd/system/cockpit.service /etc/systemd/system/default.target.wants/cockpit.service
 
 # --- CLEANING IMAGE ---
 dnf clean all
