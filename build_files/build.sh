@@ -14,7 +14,6 @@ dnf install -y --setopt=tsflags=noscripts netbird
 
 # --- COCKPIT PLUGINS ---
 dnf install -y \
-    cockpit-389-ds \
     cockpit-bridge \
     cockpit-doc \
     cockpit-files \
@@ -30,12 +29,27 @@ dnf install -y \
     cockpit-sosreport \
     cockpit-storaged \
     cockpit-system \
-    cockpit-ws \
-    cockpit-ws-selinux \
     cockpit-composer \
     cockpit-session-recording \
     dockermanager
 
+# --- DOCKER ---
+dnf config-manager addrepo --from-repofile https://download.docker.com/linux/fedora/docker-ce.repo
+dnf remove -y docker \
+    docker-client \
+    docker-client-latest \
+    docker-common \
+    docker-latest \
+    docker-latest-logrotate \
+    docker-logrotate \
+    docker-engine
+dnf install -y \
+    docker-ce \
+    docker-ce-cli \
+    containerd.io \
+    docker-buildx-plugin \
+    docker-compose-plugin \
+    docker-ce-rootless-extras
 
 # --- SCRIPT DA INIZIALIZZARE IN RUNTIME ---
 # Imposta i permessi per gli script personalizzati in runtime
@@ -51,7 +65,6 @@ done
 
 # --- SYSTEM SERVICE ---
 ln -s /usr/lib/systemd/system/netbird-init.service /etc/systemd/system/multi-user.target.wants/netbird-init.service
-ln -s /usr/lib/systemd/system/docker.service /etc/systemd/system/multi-user.target.wants/docker.service
 ln -s /usr/lib/systemd/system/cockpit.service /etc/systemd/system/default.target.wants/cockpit.service
 
 # --- CLEANING IMAGE ---

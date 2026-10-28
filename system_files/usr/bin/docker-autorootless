@@ -1,0 +1,51 @@
+#!/bin/bash
+# Script di inizializzazione automatica di Docker Rootless
+
+# 1. Recupera l'ambiente utente
+USER_HOME="$HOME"
+USER_BASHRC="$USER_HOME/.bashrc"
+SOCKET_PATH="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/docker.sock"
+
+# 2. Verifica lo stato del servizio systemd utente
+if ! systemctl --user is-active --quiet docker.service; then
+    
+    # Verifica se l'installazione rootless è mai stata eseguita
+    # Controlla se esiste l'unità utente generata dal setuptool
+    if [ ! -f "$USER_HOME/.config/systemd/user/docker.service" ]; then
+        echo "Docker Rootless non installato. Avvio installazione..."
+        # Esegue l'installazione standard fornita da Fedora
+        dockerd-rootless-setuptool.sh install
+        # Abilita e avvia immediatamente
+        systemctl --user enable --now docker.service
+    else
+        # Rilancia il servizio se i file esistono r il servizio era solo spento
+        echo "Docker Rootless installato ma fermo. Avvio in corso..."
+        systemctl --user start docker.service
+    fi
+fi
+
+# 3. Controlli e correzioni su ~/.bashrc
+LINE_PATH='export PATH=/usr/bin:$PATH'
+LINE_HOST="export DOCKER_HOST=unix://$SOCKET_PATH"
+
+if ! grep -Fxq "$LINE_PATH" "$USER_BASHRC"; then
+    echo "$LINE_PATH" >> "$USER_BASHRC"
+fi
+
+if ! grep -q "export DOCKER_HOST=" "$USER_BASHRC"; then
+    echo "$LINE_HOST" >> "$USER_BASHRC"
+fi
+
+# Esporta le variabili anche per la sessione corrente dello script
+export PATH=/usr/bin:$PATH
+export DOCKER_HOST="unix://$SOCKET_PATH"
+
+# 4. Controllo finale di conformità
+# Se il servizio è attivo, verifica il contesto
+if systemctl --user is-active --quiet docker.service; then
+    CURRENT_CONTEXT=$(docker context show 2>/dev/null)
+    if [ "$CURRENT_CONTEXT" != "rootless" ]; then
+        echo "Attenzione: Il contesto attuale è '$CURRENT_CONTEXT'. Forzo il contesto rootless..."
+        docker context use rootless || true
+    fi
+fi
