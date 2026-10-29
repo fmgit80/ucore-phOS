@@ -8,6 +8,9 @@ cp -avf "/ctx/system_files"/. /
 # --- DNF SPEEDUP ---
 sed -i '/^\[main\]/a max_parallel_downloads=10' /etc/dnf/dnf.conf
 
+# --- REMOVE MAN ---
+echo "tsflags=nodocs" >> /etc/dnf/dnf.conf
+
 # --- TAILSCALE/NETBIRD ---
 dnf remove -y tailscale
 dnf install -y --setopt=tsflags=noscripts netbird
