@@ -13,11 +13,11 @@ dnf remove -y tailscale
 dnf install -y --setopt=tsflags=noscripts netbird
 
 # --- DOCKER ---
-dnf remove -y /
-    moby-engine /
-    docker /
-    docker-cli /
-    docker-buildx /
+dnf remove -y \
+    moby-engine \
+    docker \
+    docker-cli \
+    docker-buildx \
     docker-compose
 rm -rf /var/lib/docker
 rm -rf /etc/docker
