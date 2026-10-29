@@ -13,7 +13,14 @@ dnf remove -y tailscale
 dnf install -y --setopt=tsflags=noscripts netbird
 
 # --- DOCKER ---
-dnf remove -y moby-engine docker docker-cli
+dnf remove -y /
+    moby-engine /
+    docker /
+    docker-cli /
+    docker-buildx /
+    docker-compose
+rm -rf /var/lib/docker
+rm -rf /etc/docker
 dnf config-manager addrepo --from-repofile https://download.docker.com/linux/fedora/docker-ce.repo
 dnf remove -y docker \
     docker-client \
@@ -28,8 +35,7 @@ dnf install -y \
     docker-ce-cli \
     containerd.io \
     docker-buildx-plugin \
-    docker-compose-plugin \
-    docker-ce-rootless-extras
+    docker-compose-plugin
 
 # --- SCRIPT DA INIZIALIZZARE IN RUNTIME ---
 # Imposta i permessi per gli script personalizzati in runtime
@@ -45,6 +51,8 @@ done
 
 # --- SYSTEM SERVICE ---
 ln -s /usr/lib/systemd/system/netbird-init.service /etc/systemd/system/multi-user.target.wants/netbird-init.service
+ln -s /usr/lib/systemd/system/docker.socket /etc/systemd/system/sockets.target.wants/docker.socket
+ln -s /usr/lib/systemd/system/docker.service /etc/systemd/system/multi-user.target.wants/docker.service
 ln -s /usr/lib/systemd/system/cockpit.service /etc/systemd/system/default.target.wants/cockpit.service
 
 # --- CLEANING IMAGE ---
