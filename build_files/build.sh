@@ -33,7 +33,7 @@ done
 #    echo "Abilitazione globale di: $container_name"
 #    ln -sf "/run/systemd/user/$container_name" "$USER_CONTAINER_WANTSDIR/$container_name"
 #done
-ln -s /run/systemd/user/quadeck.service /etc/systemd/user/default.target.wants/quadeck.service
+#ln -s /run/systemd/user/quadeck.service /etc/systemd/user/default.target.wants/quadeck.service
 
 # --- SYSTEM CONTAINER ---
 
