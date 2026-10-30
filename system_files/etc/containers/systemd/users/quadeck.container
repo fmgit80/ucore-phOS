@@ -6,9 +6,6 @@ Image=ghcr.io/firsttris/quadeck:latest
 ContainerName=quadeck
 PublishPort=8080:8080
 
-# Creazione delle cartelle sull'host se mancanti
-CreateVolume=true
-
 # Volume del socket
 Volume=%t/podman/podman.sock:/run/podman/podman.sock:Z
 
