@@ -1,0 +1,18 @@
+#!/bin/bash
+echo "Inizializzazione dei servizi Podman di sistema..."
+
+# Abilita e avvia il Socket di Podman (Sistema)
+systemctl enable --now podman.socket
+if systemctl is-active --quiet podman.socket; then
+    echo "Podman Socket di sistema avviato con successo."
+else
+    echo "Errore nell'avvio di podman.socket di sistema." >&2
+fi
+
+# Avvia il servizio Podman (Sistema)
+systemctl start podman.service
+if systemctl is-active --quiet podman.service; then
+    echo "Podman Service di sistema avviato con successo."
+else
+    echo "Errore nell'avvio di podman.service di sistema." >&2
+fi

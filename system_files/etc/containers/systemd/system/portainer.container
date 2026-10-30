@@ -10,13 +10,14 @@ PublishPort=9443:9443
 PublishPort=8000:8000
 
 # Volume del socket
-Volume=%t/podman/podman.sock:/run/podman/podman.sock:Z
+Volume=/var/run/podman/podman.sock:/var/run/docker.sock:Z
 
 # Volume dei dati
-Volume=%h:/data:Z
+Volume=/opt/apps/portainer:/data:Z
 
 [Service]
 Restart=always
+ExecStartPre=/usr/bin/mkdir -p /opt/apps/portainer
 
 [Install]
 WantedBy=default.target
