@@ -13,7 +13,7 @@ PublishPort=8000:8000
 Volume=%t/podman/podman.sock:/run/podman/podman.sock:Z
 
 # Volume dei dati
-Volume=%h/apps/portainer:/data:Z
+Volume=%h:/data:Z
 
 [Service]
 Restart=always

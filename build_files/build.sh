@@ -26,17 +26,10 @@ for bash_file in /ctx/system_files/usr/bin/*; do
 done
 
 # --- USER CONTAINER ---
-#USER_CONTAINER_WANTSDIR="/etc/systemd/user/default.target.wants"
-#mkdir -p "$USER_CONTAINER_WANTSDIR"
-#for container_file in /ctx/system_files/etc/containers/systemd/users/*.container; do
-#    container_name=$(basename "$container_file")
-#    echo "Abilitazione globale di: $container_name"
-#    ln -sf "/run/systemd/user/$container_name" "$USER_CONTAINER_WANTSDIR/$container_name"
-#done
-#ln -s /run/systemd/user/quadeck.service /etc/systemd/user/default.target.wants/quadeck.service
+# in /etc/containers/systemd/users
 
 # --- SYSTEM CONTAINER ---
-
+# in /etc/containers/systemd/users
 
 # --- USER SERVICE ---
 USER_WANTS_DIR="/etc/systemd/user/default.target.wants"
