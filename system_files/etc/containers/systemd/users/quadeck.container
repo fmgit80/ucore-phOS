@@ -1,0 +1,26 @@
+[Unit]
+Description=Quadeck Web UI for Podman (Automated Rootless)
+
+[Container]
+Image=ghcr.io/firsttris/quadeck:latest
+ContainerName=quadeck
+PublishPort=8080:8080
+
+# Creazione delle cartelle sull'host se mancanti
+CreateVolume=true
+
+# Volume del socket
+Volume=%t/podman/podman.sock:/run/podman/podman.sock:Z
+
+# Volume dei Quadlet utente
+Volume=%h/.config/containers/systemd:/etc/containers/systemd:Z
+
+# Volume dei dati
+Volume=%h/apps/quadeck:/app/data:Z
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
+

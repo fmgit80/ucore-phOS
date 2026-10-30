@@ -15,31 +15,6 @@ echo "tsflags=nodocs" >> /etc/dnf/dnf.conf
 dnf remove -y tailscale
 dnf install -y --setopt=tsflags=noscripts netbird
 
-# --- DOCKER ---
-dnf remove -y \
-    moby-engine \
-    docker \
-    docker-cli \
-    docker-buildx \
-    docker-compose
-rm -rf /var/lib/docker
-rm -rf /etc/docker
-dnf config-manager addrepo --from-repofile https://download.docker.com/linux/fedora/docker-ce.repo
-dnf remove -y docker \
-    docker-client \
-    docker-client-latest \
-    docker-common \
-    docker-latest \
-    docker-latest-logrotate \
-    docker-logrotate \
-    docker-engine
-dnf install -y \
-    docker-ce \
-    docker-ce-cli \
-    containerd.io \
-    docker-buildx-plugin \
-    docker-compose-plugin
-
 # --- SCRIPT DA INIZIALIZZARE IN RUNTIME ---
 # Imposta i permessi per gli script personalizzati in runtime
 for bash_file in /ctx/system_files/usr/bin/*; do
@@ -50,13 +25,33 @@ for bash_file in /ctx/system_files/usr/bin/*; do
     fi
 done
 
+# --- USER CONTAINER ---
+#USER_CONTAINER_WANTSDIR="/etc/systemd/user/default.target.wants"
+#mkdir -p "$USER_CONTAINER_WANTSDIR"
+#for container_file in /ctx/system_files/etc/containers/systemd/users/*.container; do
+#    container_name=$(basename "$container_file")
+#    echo "Abilitazione globale di: $container_name"
+#    ln -sf "/run/systemd/user/$container_name" "$USER_CONTAINER_WANTSDIR/$container_name"
+#done
+ln -s /run/systemd/user/quadeck.service /etc/systemd/user/default.target.wants/quadeck.service
+
+# --- SYSTEM CONTAINER ---
+
+
 # --- USER SERVICE ---
 
+
 # --- SYSTEM SERVICE ---
+#SYSTEM_WANTS_DIR="/usr/lib/systemd/system/multi-user.target.wants"
+#mkdir -p "$SYSTEM_WANTS_DIR"
+#for service_file in /ctx/system_files/usr/lib/systemd/system/*.service; do
+#    service_name=$(basename "$service_file")
+#    echo "Abilitazione globale di: $service_name"
+#    ln -sf "/usr/lib/systemd/system/$service_name" "$SYSTEM_WANTS_DIR/$service_name"
+#done
+ln -s /usr/lib/systemd/system/enable-user-linger.service /etc/systemd/system/multi-user.target.wants/enable-user-linger.service
 ln -s /usr/lib/systemd/system/netbird-init.service /etc/systemd/system/multi-user.target.wants/netbird-init.service
-ln -s /usr/lib/systemd/system/docker.socket /etc/systemd/system/sockets.target.wants/docker.socket
-ln -s /usr/lib/systemd/system/docker.service /etc/systemd/system/multi-user.target.wants/docker.service
-ln -s /usr/lib/systemd/system/cockpit.service /etc/systemd/system/default.target.wants/cockpit.service
+#ln -s /usr/lib/systemd/system/cockpit.service /etc/systemd/system/default.target.wants/cockpit.service
 
 # --- CLEANING IMAGE ---
 dnf clean all

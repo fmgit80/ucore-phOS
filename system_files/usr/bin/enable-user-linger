@@ -1,0 +1,11 @@
+#!/bin/bash
+
+TARGET_USER="core"
+
+# Attende che l'utente sia stato effettivamente creato nel sistema
+while ! id "$TARGET_USER" &>/dev/null; do
+    sleep 1
+done
+
+# Abilita il linger per l'utente
+loginctl enable-linger "$TARGET_USER"

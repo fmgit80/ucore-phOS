@@ -1,0 +1,2 @@
+enable enable-user-linger.service
+enable netbird-init.service
