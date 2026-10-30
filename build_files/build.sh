@@ -57,16 +57,7 @@ for service_file in /ctx/system_files/usr/lib/systemd/system/*.service; do
 done
 #ln -s /usr/lib/systemd/system/enable-user-linger.service /etc/systemd/system/multi-user.target.wants/enable-user-linger.service
 #ln -s /usr/lib/systemd/system/netbird-init.service /etc/systemd/system/multi-user.target.wants/netbird-init.service
-#ln -s /usr/lib/systemd/system/cockpit.service /etc/systemd/system/default.target.wants/cockpit.service
-
-# --- QUADECK ---
-curl -fsSLo /usr/local/bin/quadeck https://github.com/firsttris/quadeck/releases/latest/download/quadeck-linux-x64-baseline
-chmod +x /usr/local/bin/quadeck
-groupadd --system quadeck
-useradd --system --gid quadeck --home-dir /var/lib/quadeck --no-create-home --shell /usr/sbin/nologin quadeck
-usermod -aG systemd-journal quadeck
-quadeck print-unit helper > /etc/systemd/system/quadeck-helper.service
-quadeck print-unit web > /etc/systemd/system/quadeck.service
+ln -s /usr/lib/systemd/system/cockpit.service /etc/systemd/system/default.target.wants/cockpit.service
 
 # --- CLEANING IMAGE ---
 dnf clean all
