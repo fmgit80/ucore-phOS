@@ -18,7 +18,7 @@ dnf install -y --setopt=tsflags=noscripts netbird
 # --- DOCKER ---
 dnf remove -y \
     docker-buildx \
-    cocker-cli \
+    docker-cli \
     docker-compose \
     docker-compose-switch \
     moby-engine
