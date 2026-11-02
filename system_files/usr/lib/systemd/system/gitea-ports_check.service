@@ -1,0 +1,12 @@
+[Unit]
+Description=Controllo automatico porte Gitea nel Firewall
+After=firewalld.service
+Requires=firewalld.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/gitea-ports_check
+
+[Install]
+WantedBy=default.target

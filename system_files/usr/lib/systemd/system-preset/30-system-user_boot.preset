@@ -1,3 +1,4 @@
 enable enable-user-linger.service
 enable netbird-init.service
 enable podman-init.service
+enable gitea-ports_check

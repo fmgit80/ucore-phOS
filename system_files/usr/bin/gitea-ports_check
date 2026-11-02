@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Definisci le porte da controllare
+PORTS=("3000/tcp" "2222/tcp")
+RELOAD_NEEDED=0
+
+# Ottieni la zona attiva di default
+DEFAULT_ZONE=$(firewall-cmd --get-default-zone)
+
+for PORT in "${PORTS[@]}"; do
+    # Verifica se la porta è già aperta nella zona di default
+    firewall-cmd --zone="$DEFAULT_ZONE" --query-port="$PORT" >/dev/null 2>&1
+
+    if [ $? -ne 0 ]; then
+        echo "Porta $PORT chiusa. Apertura in corso..."
+        firewall-cmd --permanent --zone="$DEFAULT_ZONE" --add-port="$PORT"
+        RELOAD_NEEDED=1
+    else
+        echo "Porta $PORT già aperta."
+    fi
+done
+
+# Ricarica il firewall solo se è stato modificato qualcosa
+if [ $RELOAD_NEEDED -eq 1 ]; then
+    echo "Ricaricamento delle regole del firewall..."
+    firewall-cmd --reload
+else
+    echo "Nessuna modifica necessaria al firewall."
+fi

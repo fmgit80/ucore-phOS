@@ -7,9 +7,12 @@ PublishPort=2222:2222
 PublishPort=3000:3000
 Image=docker.gitea.com/gitea:latest
 ContainerName=gitea
-Mount=type=volume,src=gitea-data.volume,destination=/var/lib/gitea
-Mount=type=volume,src=gitea-config.volume,destination=/etc/gitea
+Mount=type=volume,src=gitea-data.volume,destination=/data/gitea
+Mount=type=volume,src=gitea-config.volume,destination=/data/conf
+#Mount=type=volume,src=gitea-data.volume,destination=/var/lib/gitea
+#Mount=type=volume,src=gitea-config.volume,destination=/etc/gitea
 Network=gitea.network
+Environment=GITEA__packages__ENABLED=true
 Environment=GITEA__database__DB_TYPE=postgres
 Environment=GITEA__database__HOST=gitea-postgres:5432
 Environment=GITEA__database__NAME=gitea
