@@ -15,6 +15,30 @@ echo "tsflags=nodocs" >> /etc/dnf/dnf.conf
 dnf remove -y tailscale
 dnf install -y --setopt=tsflags=noscripts netbird
 
+# --- DOCKER ---
+dnf remove -y \
+    docker-buildx \
+    cocker-cli \
+    docker-compose \
+    docker-compose-switch \
+    moby-engine
+dnf config-manager addrepo --from-repofile https://download.docker.com/linux/fedora/docker-ce.repo
+dnf remove -y docker \
+    docker-client \
+    docker-client-latest \
+    docker-common \
+    docker-latest \
+    docker-latest-logrotate \
+    docker-logrotate \
+    docker-engine
+dnf install -y \
+    docker-ce \
+    docker-ce-cli \
+    containerd.io \
+    docker-buildx-plugin \
+    docker-compose-plugin \
+    docker-ce-rootless-extras
+
 # --- SCRIPT DA INIZIALIZZARE IN RUNTIME ---
 # Imposta i permessi per gli script personalizzati in runtime
 for bash_file in /ctx/system_files/usr/bin/*; do

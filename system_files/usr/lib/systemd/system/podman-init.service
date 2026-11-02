@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/podman-init
-RemainAfterExit=true
+RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target

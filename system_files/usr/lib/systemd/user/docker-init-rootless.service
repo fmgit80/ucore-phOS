@@ -1,0 +1,11 @@
+[Unit]
+Description=Verifica e Inizializzazione Automatica Docker Rootless
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/docker-init-rootless
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target
