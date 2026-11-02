@@ -29,7 +29,7 @@ done
 # in /etc/containers/systemd/users
 
 # --- SYSTEM CONTAINER ---
-# in /etc/containers/systemd/users
+# in /etc/containers/systemd
 
 # --- USER SERVICE ---
 USER_WANTS_DIR="/etc/systemd/user/default.target.wants"
