@@ -1,0 +1,17 @@
+[Container]
+Image=docker.io/library/postgres:latest
+ContainerName=forgejo-db
+Network=forgejo.network
+
+# Volumi denominati gestiti da Podman
+Volume=forgejo_db_data:/var/lib/postgresql/data
+
+Environment=POSTGRES_USER=forgejo
+Environment=POSTGRES_PASSWORD=forgejo
+Environment=POSTGRES_DB=forgejo
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
