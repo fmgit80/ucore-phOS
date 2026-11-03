@@ -6,7 +6,7 @@ Requires=firewalld.service
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/bin/gitea-ports_check
+ExecStart=/usr/bin/ports_check
 
 [Install]
 WantedBy=default.target

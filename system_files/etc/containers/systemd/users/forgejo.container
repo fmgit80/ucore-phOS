@@ -3,14 +3,18 @@ Requires=forgejo-db.service
 After=forgejo-db.service
 
 [Container]
-Image=codeberg.org/forgejo/forgejo:latest
+Image=codeberg.org/forgejo/forgejo:17-rootless
 ContainerName=forgejo
 Network=forgejo.network
 PublishPort=3000:3000
+UserNS=keep-id
 
 # Volumi denominati gestiti da Podman (inclusi i file di fuso orario in sola lettura)
-Volume=forgejo_data:/data
-Volume=/etc/timezone:/etc/timezone:ro
+#Volume=forgejo_data:/data
+Volume=forgejo-data.volume:/data/forgejo:Z
+Volume=forgejo-config.volume:/data/conf:Z
+#Mount=type=volume,src=forgejo-data.volume,destination=/data/forgejo
+#Mount=type=volume,src=forgejo-config.volume,destination=/data/conf
 Volume=/etc/localtime:/etc/localtime:ro
 
 # Variabili d'ambiente
@@ -34,3 +38,4 @@ Restart=always
 
 [Install]
 WantedBy=default.target
+

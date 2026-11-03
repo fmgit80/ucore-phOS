@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Definisci le porte da controllare
-PORTS=("3000/tcp" "2222/tcp")
+PORTS=("3000/tcp" "2222/tcp" "9443/tcp")
 RELOAD_NEEDED=0
 
 # Ottieni la zona attiva di default

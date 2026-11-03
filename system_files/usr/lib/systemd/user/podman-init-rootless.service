@@ -1,5 +1,5 @@
 [Unit]
-Description=Inizializzazione personalizzata Podman Root
+Description=Inizializzazione personalizzata Podman User
 After=network.target
 
 [Service]
