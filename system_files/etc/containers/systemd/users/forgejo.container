@@ -7,20 +7,18 @@ Image=codeberg.org/forgejo/forgejo:17-rootless
 ContainerName=forgejo
 Network=forgejo.network
 PublishPort=3000:3000
+# Blocca l'utente del container con stesso UID e GID che lancia il container
 UserNS=keep-id
 
 # Volumi denominati gestiti da Podman (inclusi i file di fuso orario in sola lettura)
-#Volume=forgejo_data:/data
-Volume=forgejo-data.volume:/data/forgejo:Z
-Volume=forgejo-config.volume:/data/conf:Z
-#Mount=type=volume,src=forgejo-data.volume,destination=/data/forgejo
-#Mount=type=volume,src=forgejo-config.volume,destination=/data/conf
+Volume=forgejo-data.volume:/var/lib/gitea:Z
+Volume=forgejo-config.volume:/etc/gitea:Z
 Volume=/etc/localtime:/etc/localtime:ro
 
 # Variabili d'ambiente
 Environment=USER_UID=1000
 Environment=USER_GID=1000
-Environment=FORGEJO__server__ROOT_URL=http://192.168.122.225
+Environment=FORGEJO__server__ROOT_URL=http://192.168.122.225:3000
 Environment=FORGEJO__server__HTTP_PORT=3000
 Environment=FORGEJO__server__DISABLE_SSH=true
 Environment=FORGEJO__server__LFS_START_SERVER=true

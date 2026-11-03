@@ -5,9 +5,7 @@ Network=forgejo.network
 UserNS=keep-id
 
 # Volumi denominati gestiti da Podman
-#Volume=forgejo_db_data:/var/lib/postgresql
 Volume=forgejo-db-data.volume:/var/lib/postgresql:Z
-#Mount=type=volume,src=forgejo-db-data.volume,destination=/var/lib/postgresql
 
 Environment=POSTGRES_USER=forgejo
 Environment=POSTGRES_PASSWORD=forgejo
